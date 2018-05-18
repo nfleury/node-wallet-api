@@ -17,7 +17,7 @@ const add_pre_fix_byte = 0xa0;   //a0 + address  ,a0 is version
  * @param priKeyBytes: privateKey for ECC
  * @param transaction: a Transaction object unSigned
  */
-function signTransaction(priKeyBytes, transaction) {
+const signTransaction = function signTransaction(priKeyBytes, transaction) {
 
   if (typeof priKeyBytes === 'string') {
     priKeyBytes = hexStr2byteArray(priKeyBytes);
@@ -58,7 +58,7 @@ function genPriKey() {
 }
 
 //return address by bytes, pubBytes is byte[]
-function computeAddress(pubBytes) {
+const computeAddress = function computeAddress(pubBytes) {
   if (pubBytes.length === 65) {
     pubBytes = pubBytes.slice(1);
   }
@@ -71,14 +71,14 @@ function computeAddress(pubBytes) {
 }
 
 //return address by bytes, priKeyBytes is byte[]
-function getAddressFromPriKey(priKeyBytes) {
+const getAddressFromPriKey = function getAddressFromPriKey(priKeyBytes) {
   let pubBytes = getPubKeyFromPriKey(priKeyBytes);
   let addressBytes = computeAddress(pubBytes);
   return addressBytes;
 }
 
 //return address by Base58Check String,
-function getBase58CheckAddress(addressBytes) {
+const getBase58CheckAddress = function getBase58CheckAddress(addressBytes) {
   var hash0 = SHA256(addressBytes);
   var hash1 = SHA256(hash0);
   var checkSum = hash1.slice(0, 4);
@@ -164,7 +164,7 @@ function getAddressFromPriKeyBase64String(priKeyBase64String) {
 }
 
 //return pubkey by 65 bytes, priKeyBytes is byte[]
-function getPubKeyFromPriKey(priKeyBytes) {
+const getPubKeyFromPriKey = function getPubKeyFromPriKey(priKeyBytes) {
   var ec = new EC('secp256k1');
   var key = ec.keyFromPrivate(priKeyBytes, 'bytes');
   var pubkey = key.getPublic();
@@ -206,7 +206,7 @@ function ECKeySign(hashBytes, priKeyBytes) {
 
 
 //return 32 bytes
-function SHA256(msgBytes) {
+const SHA256 = function SHA256(msgBytes) {
   let shaObj = new jsSHA("SHA-256", "HEX");
   let msgHex = byteArray2hexStr(msgBytes);
   shaObj.update(msgHex);
