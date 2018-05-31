@@ -206,7 +206,7 @@ function hexStr2byteArray(str) {
   var j = 0;
   var k = 0;
 
-  for (let i = 0; i < str.length; i++) {
+  for (var i = 0;i < str.length; i++) {
     var c = str.charAt(i);
     if (isHexChar(c)) {
       d <<= 4;
@@ -262,7 +262,7 @@ function base64EncodeToString(bytes) {
 function Base64() {
 
   // private property
-  let _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+  var _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
   // public method for encoding
   this.encode = function (input) {
@@ -372,11 +372,11 @@ function Base64() {
 
   // private method for UTF-8 decoding
   this._out2ByteArray = function (utftext) {
-    let byteArray = new Array(utftext.length)
-    let i = 0;
-    let c = 0;
-    let c1 = 0;
-    let c2 = 0;
+    var byteArray = new Array(utftext.length)
+    var i = 0;
+    var c = 0;
+    var c1 = 0;
+    var c2 = 0;
     while (i < utftext.length) {
       c = utftext.charCodeAt(i);
       byteArray[i] = c;
@@ -512,4 +512,4 @@ module.exports = {
   base64DecodeFromString,
   hexStr2byteArray,
   stringToBytes,
-};
+}

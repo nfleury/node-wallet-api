@@ -184,7 +184,7 @@ const getPubKeyFromPriKey = function getPubKeyFromPriKey(priKeyBytes) {
 }
 
 //return sign by 65 bytes r s id. id < 27
-function ECKeySign(hashBytes, priKeyBytes) {
+const ECKeySign = function ECKeySign(hashBytes, priKeyBytes) {
   let ec = new EC('secp256k1');
   let key = ec.keyFromPrivate(priKeyBytes, 'bytes');
   let signature = key.sign(hashBytes);
