@@ -5,9 +5,9 @@ const {getBase58CheckAddress, genPriKey, getAddressFromPriKey} = require("./cryp
 /**
  * Generate a new account
  */
-function generateAccount() {
+function generateAccount(isMainNet) {
   let priKeyBytes = genPriKey();
-  let addressBytes = getAddressFromPriKey(priKeyBytes);
+  let addressBytes = getAddressFromPriKey(priKeyBytes,isMainNet);
   let address = getBase58CheckAddress(addressBytes);
   let privateKey = byteArray2hexStr(priKeyBytes);
 

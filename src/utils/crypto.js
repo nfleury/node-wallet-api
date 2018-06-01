@@ -9,6 +9,15 @@ const { byte2hexStr, byteArray2hexStr } = require("./bytes");
 const add_pre_fix = 'a0'; //a0 + address  ,a0 is version
 const add_pre_fix_byte = 0xa0;   //a0 + address  ,a0 is version
 
+const getAddressPrefix =(isMainNet)=>{
+
+  if (!isMainNet){
+    return {str:'a0',byte:0xa0}
+  }else{
+    return {str:'41',byte:0x41}
+  }
+}
+
 /**
  * Sign A Transaction by priKey.
  * signature is 65 bytes, r[32] || s[32] || id[1](<27)
@@ -58,22 +67,22 @@ function genPriKey() {
 }
 
 //return address by bytes, pubBytes is byte[]
-const computeAddress = function computeAddress(pubBytes) {
+const computeAddress = function computeAddress(pubBytes,isMainNet) {
   if (pubBytes.length === 65) {
     pubBytes = pubBytes.slice(1);
   }
 
   var hash = keccak256(pubBytes).toString();
   var addressHex = hash.substring(24);
-  addressHex = add_pre_fix + addressHex;
+  addressHex = getAddressPrefix(isMainNet).str + addressHex;
   var addressBytes = hexStr2byteArray(addressHex);
   return addressBytes;
 }
 
 //return address by bytes, priKeyBytes is byte[]
-const getAddressFromPriKey = function getAddressFromPriKey(priKeyBytes) {
+const getAddressFromPriKey = function getAddressFromPriKey(priKeyBytes,isMainNet) {
   let pubBytes = getPubKeyFromPriKey(priKeyBytes);
-  let addressBytes = computeAddress(pubBytes);
+  let addressBytes = computeAddress(pubBytes,isMainNet);
   return addressBytes;
 }
 
@@ -111,18 +120,19 @@ function decode58Check(addressStr) {
 }
 
 
-function isAddressValid(base58Sting) {
+function isAddressValid(base58Sting,isMainNet) {
+  let addressLength = isMainNet ? 34 : 35
   if (typeof(base58Sting) != 'string') {
     return false;
   }
-  if (base58Sting.length != 35) {
+  if (base58Sting.length != addressLength) {
     return false;
   }
   var address = decode58(base58Sting);
   if (address.length != 25) {
     return false;
   }
-  if (address[0] != add_pre_fix_byte) {
+  if (address[0] != getAddressPrefix(isMainNet).byte) {
     return false;
   }
   var checkSum = address.slice(21);
@@ -220,9 +230,9 @@ function passwordToAddress(password) {
   return getBase58CheckAddress(com_addressBytes);
 }
 
-function privateKeyToAddress(password) {
+function privateKeyToAddress(password,isMainNet) {
   let com_priKeyBytes = hexStr2byteArray(password);
-  let com_addressBytes = getAddressFromPriKey(com_priKeyBytes);
+  let com_addressBytes = getAddressFromPriKey(com_priKeyBytes,isMainNet);
   return getBase58CheckAddress(com_addressBytes);
 }
 
